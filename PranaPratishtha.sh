@@ -43,7 +43,7 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 sudo apt-get update
-sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ant attr axel curl expect gedit git ipcalc ipset iptables jq plink p7zip-full parallel putty putty-tools pv rsync s3fs socat sshpass terminator tmux tree ufw wget whois yad net-tools python3-full python3-pip build-essential gcc gdb lzip mysql-client mtr ncdu nmap  tk wireguard-tools ttyd mc   texlive-binaries netbase net-tools markdown retext mailutils plocate libgts-bin lvm2 gettext openjdk-21-jdk ant curl git ipcalc ipset iptables jq mc nano nmap openssl parallel pv socat ssh sshpass ufw wget lsof putty pv rsync putty-tools expect terraform vagrant net-tools ttyd ca-certificates curl gnupg tmux cron mysql-client net-tools libvirt-dev docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin terraform vagrant
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ant attr axel curl expect gedit git ipcalc ipset iptables jq plink p7zip-full parallel putty putty-tools pv rsync s3fs socat sshpass terminator tmux tree ufw wget whois yad net-tools python3-full python3-pip build-essential gcc gdb lzip mysql-client mtr ncdu nmap  tk wireguard-tools ttyd mc   texlive-binaries netbase net-tools markdown retext mailutils plocate libgts-bin lvm2 gettext openjdk-21-jdk ant curl git ipcalc ipset iptables jq mc nano nmap openssl parallel pv socat ssh sshpass ufw wget lsof putty pv rsync putty-tools expect terraform vagrant net-tools ttyd ca-certificates curl gnupg tmux cron mysql-client net-tools libvirt-dev docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin terraform vagrant rename
 
 sudo vagrant plugin install vagrant-disksize vagrant-vbguest vagrant-libvirt
 sudo pip3 install mysql-connector-python pycryptodome bcrypt --break-system-packages
@@ -175,6 +175,8 @@ FINAL_SCORE=$(printf "%.0f" "$SCORE")
 echo " Final System Compliance Level: $FINAL_SCORE/100"
 echo "=================================================="
 
+PROCEEDTOINSTALL="N"
+
 if [ ${#MISSING_COMMANDS[@]} -ne 0 ]; then
     echo ""
     echo "❌ UNRESOLVED/MISSING DEPENDENCIES:"
@@ -184,4 +186,31 @@ if [ ${#MISSING_COMMANDS[@]} -ne 0 ]; then
 else
     echo ""
     echo "✨ Perfect! Every Tool & Base Package Successfully Validated."
+    PROCEEDTOINSTALL="Y"
 fi
+
+if [ "$PROCEEDTOINSTALL" == "Y" ] ; then
+	echo ""
+	sudo mkdir -p /opt/Matsya && sudo chmod -R 777 /opt/Matsya
+	
+	sudo rm -f /tmp/SANATAN.squashfs
+	docker pull minus1by12/sanatan:pranapratishtha-1.0
+	TEMPNAME=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 15 | head -n 1)
+	docker create --name $TEMPNAME minus1by12/sanatan:pranapratishtha-1.0 true
+	docker cp $TEMPNAME:/data/SANATAN.squashfs /tmp/
+	docker rm $TEMPNAME
+	sudo unsquashfs -f -d /opt/Matsya /tmp/SANATAN.squashfs
+	sudo rm -f /tmp/SANATAN.squashfs
+	
+	sudo mkdir -p /opt/Matsya/Repo
+	sudo mkdir -p /opt/Matsya/Stack/DockerImages
+	sudo mkdir -p /opt/Matsya/Output/Storage/VM
+
+	sudo ln -s /opt/Matsya/Scripts/newport.sh /usr/bin/newport
+	sudo ln -s /opt/Matsya/sanatan.sh /usr/bin/sanatanprarambh
+	sudo ln -s /opt/Matsya/sanatan3.sh /usr/bin/sanatanvishram		
+	
+	sudo chmod -R 777 /opt/Matsya
+fi
+
+
