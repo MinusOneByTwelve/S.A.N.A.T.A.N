@@ -2,6 +2,22 @@
 
 clear
 
+RANDOMUSERNAME="sanatan"
+
+while true; do
+    read -s -p "Enter Password For S.A.N.A.T.A.N User : " PASSWORD1
+    echo
+    read -s -p "Confirm password : " PASSWORD2
+    echo
+
+    if [[ "$PASSWORD1" == "$PASSWORD2" ]]; then
+        RANDOMPASSWORD="$PASSWORD1"
+        break
+    else
+        echo "Passwords Do Not Match. Try Again."
+    fi
+done
+
 sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y curl
 
 # ==============================================================================
@@ -51,22 +67,6 @@ sudo pip3 install mysql-connector-python pycryptodome bcrypt --break-system-pack
 echo "virtualbox-ext-pack virtualbox-ext-pack/license select true" | sudo debconf-set-selections
 echo "virtualbox-ext-pack virtualbox-ext-pack/license seen true" | sudo debconf-set-selections
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y virtualbox virtualbox-ext-pack virtualbox-ext-pack virtualbox
-
-RANDOMUSERNAME="sanatan"
-
-while true; do
-    read -s -p "Enter Password For S.A.N.A.T.A.N User : " PASSWORD1
-    echo
-    read -s -p "Confirm password : " PASSWORD2
-    echo
-
-    if [[ "$PASSWORD1" == "$PASSWORD2" ]]; then
-        RANDOMPASSWORD="$PASSWORD1"
-        break
-    else
-        echo "Passwords Do Not Match. Try Again."
-    fi
-done
 
 sudo useradd -d /home/$RANDOMUSERNAME -s /bin/bash -m $RANDOMUSERNAME
 sudo usermod -p $(echo "$RANDOMPASSWORD" | openssl passwd -1 -stdin) $RANDOMUSERNAME
@@ -194,11 +194,11 @@ if [ "$PROCEEDTOINSTALL" == "Y" ] ; then
 	sudo mkdir -p /opt/Matsya && sudo chmod -R 777 /opt/Matsya
 	
 	sudo rm -f /tmp/SANATAN.squashfs
-	docker pull minus1by12/sanatan:pranapratishtha-1.0
+	sudo docker pull minus1by12/sanatan:pranapratishtha-1.0
 	TEMPNAME=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 15 | head -n 1)
-	docker create --name $TEMPNAME minus1by12/sanatan:pranapratishtha-1.0 true
-	docker cp $TEMPNAME:/data/SANATAN.squashfs /tmp/
-	docker rm $TEMPNAME
+	sudo docker create --name $TEMPNAME minus1by12/sanatan:pranapratishtha-1.0 true
+	sudo docker cp $TEMPNAME:/data/SANATAN.squashfs /tmp/
+	sudo docker rm $TEMPNAME
 	sudo unsquashfs -f -d /opt/Matsya /tmp/SANATAN.squashfs
 	sudo rm -f /tmp/SANATAN.squashfs
 	
@@ -206,9 +206,24 @@ if [ "$PROCEEDTOINSTALL" == "Y" ] ; then
 	sudo mkdir -p /opt/Matsya/Stack/DockerImages
 	sudo mkdir -p /opt/Matsya/Output/Storage/VM
 
+	sudo rm -rf /opt/Matsya/tmp/*
+	sudo rm -rf /opt/Matsya/VagVBox/*
+	sudo rm -rf /opt/Matsya/Secrets/*
+	sudo mkdir -p /opt/Matsya/Secrets/tmp
+	sudo rm -rf /opt/Matsya/Output/Pem/*
+	sudo rm -rf /opt/Matsya/Output/Scope/*
+	sudo rm -rf /opt/Matsya/Output/Vision/*
+	sudo rm -rf /opt/Matsya/Output/Terraform/*
+	sudo rm -rf /opt/Matsya/Output/Logs/KRISHNA/*
+	sudo rm -rf /opt/Matsya/Output/Logs/KURMA/*
+	sudo rm -rf /opt/Matsya/Output/Logs/MATSYA/*
+	sudo rm -rf /opt/Matsya/Output/Logs/VAMANA/*
+
 	sudo ln -s /opt/Matsya/Scripts/newport.sh /usr/bin/newport
 	sudo ln -s /opt/Matsya/sanatan.sh /usr/bin/sanatanprarambh
 	sudo ln -s /opt/Matsya/sanatan3.sh /usr/bin/sanatanvishram		
+	
+	echo "FIRSTRUN" | sudo tee /opt/Matsya/FIRSTRUN
 	
 	sudo chmod -R 777 /opt/Matsya
 	
@@ -224,7 +239,9 @@ Terminal=false
 Categories=Utility;Application;
 EOF"
 
-	sudo chmod +x /usr/share/applications/sanatan.desktop	
+	sudo chmod +x /usr/share/applications/sanatan.desktop
+	
+	sudo mkdir -p /opt/firefox
+	sudo ln -s /usr/bin/firefox /opt/firefox/firefox		
 fi
-
 
