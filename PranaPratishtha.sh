@@ -227,6 +227,12 @@ if [ "$PROCEEDTOINSTALL" == "Y" ] ; then
 	sudo rm -rf /opt/Matsya/Output/Logs/MATSYA/*
 	sudo rm -rf /opt/Matsya/Output/Logs/VAMANA/*
 
+	sudo rm -f /usr/bin/newport	
+	sudo rm -f /usr/bin/sanatanprarambh
+	sudo rm -f /usr/bin/sanatanvishram
+	sudo rm -f /usr/share/applications/sanatan.desktop
+	sudo rm -f /opt/firefox/firefox
+			
 	sudo ln -s /opt/Matsya/Scripts/newport.sh /usr/bin/newport
 	sudo ln -s /opt/Matsya/sanatan.sh /usr/bin/sanatanprarambh
 	sudo ln -s /opt/Matsya/sanatan3.sh /usr/bin/sanatanvishram		
