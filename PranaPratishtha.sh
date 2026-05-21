@@ -199,7 +199,7 @@ fi
 
 if [ "$PROCEEDTOINSTALL" == "Y" ] ; then
 	echo ""
-	sudo mkdir -p /opt/Matsya && sudo chmod -R 777 /opt/Matsya
+	sudo rm -rf /opt/Matsya && sudo mkdir -p /opt/Matsya && sudo chmod -R 777 /opt/Matsya
 	
 	sudo rm -f /tmp/SANATAN.squashfs
 	sudo docker pull minus1by12/sanatan:pranapratishtha-1.0
