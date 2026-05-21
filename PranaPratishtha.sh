@@ -230,7 +230,6 @@ if [ "$PROCEEDTOINSTALL" == "Y" ] ; then
 	sudo rm -f /usr/bin/newport	
 	sudo rm -f /usr/bin/sanatanprarambh
 	sudo rm -f /usr/bin/sanatanvishram
-	sudo rm -f /usr/share/applications/sanatan.desktop
 	sudo rm -f /opt/firefox/firefox
 			
 	sudo ln -s /opt/Matsya/Scripts/newport.sh /usr/bin/newport
@@ -240,21 +239,7 @@ if [ "$PROCEEDTOINSTALL" == "Y" ] ; then
 	echo "FIRSTRUN" | sudo tee /opt/Matsya/FIRSTRUN
 	
 	sudo chmod -R 777 /opt/Matsya
-	
-	sudo bash -c "cat << 'EOF' > /usr/share/applications/sanatan.desktop
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=S.A.N.A.T.A.N
-Comment=Launch S.A.N.A.T.A.N
-Exec=sanatanprarambh
-Icon=/opt/Matsya/images/devi.png
-Terminal=false
-Categories=Utility;Application;
-EOF"
-
-	sudo chmod +x /usr/share/applications/sanatan.desktop
-	
+		
 	sudo mkdir -p /opt/firefox
 	sudo ln -s /usr/bin/firefox /opt/firefox/firefox
 	
