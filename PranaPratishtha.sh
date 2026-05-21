@@ -242,6 +242,9 @@ EOF"
 	sudo chmod +x /usr/share/applications/sanatan.desktop
 	
 	sudo mkdir -p /opt/firefox
-	sudo ln -s /usr/bin/firefox /opt/firefox/firefox		
+	sudo ln -s /usr/bin/firefox /opt/firefox/firefox
+	
+	echo ""
+	echo "✨ REBOOT & Login As S.A.N.A.T.A.N User"			
 fi
 
