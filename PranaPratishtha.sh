@@ -4,19 +4,23 @@ clear
 
 RANDOMUSERNAME="sanatan"
 
-while true; do
-    read -s -p "Enter Password For S.A.N.A.T.A.N User : " PASSWORD1
-    echo
-    read -s -p "Confirm password : " PASSWORD2
-    echo
+if id "$RANDOMUSERNAME" &>/dev/null; then
+	echo "User '$RANDOMUSERNAME' Already Exists."
+else
+	while true; do
+	    read -s -p "Enter Password For S.A.N.A.T.A.N User : " PASSWORD1
+	    echo
+	    read -s -p "Confirm password : " PASSWORD2
+	    echo
 
-    if [[ "$PASSWORD1" == "$PASSWORD2" ]]; then
-        RANDOMPASSWORD="$PASSWORD1"
-        break
-    else
-        echo "Passwords Do Not Match. Try Again."
-    fi
-done
+	    if [[ "$PASSWORD1" == "$PASSWORD2" ]]; then
+		RANDOMPASSWORD="$PASSWORD1"
+		break
+	    else
+		echo "Passwords Do Not Match. Try Again."
+	    fi
+	done
+fi
 
 sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y curl
 
@@ -68,23 +72,27 @@ echo "virtualbox-ext-pack virtualbox-ext-pack/license select true" | sudo debcon
 echo "virtualbox-ext-pack virtualbox-ext-pack/license seen true" | sudo debconf-set-selections
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y virtualbox virtualbox-ext-pack virtualbox-ext-pack virtualbox
 
-sudo useradd -d /home/$RANDOMUSERNAME -s /bin/bash -m $RANDOMUSERNAME
-sudo usermod -p $(echo "$RANDOMPASSWORD" | openssl passwd -1 -stdin) $RANDOMUSERNAME
-sudo usermod -aG sudo $RANDOMUSERNAME
-sudo chfn -f "S.A.N.A.T.A.N" $RANDOMUSERNAME
-sudo rm -f /etc/sudoers.d/$RANDOMUSERNAME-user
-echo "$RANDOMUSERNAME ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$RANDOMUSERNAME-user > /dev/null
-sudo mkdir -p /home/$RANDOMUSERNAME/.ssh
-sudo chown -R $RANDOMUSERNAME:$RANDOMUSERNAME /home/$RANDOMUSERNAME/.ssh
-sudo chmod -R u=rwx,g=rwx,o=rwx /home/$RANDOMUSERNAME/.ssh
-sudo chown -R $RANDOMUSERNAME:$RANDOMUSERNAME /home/$RANDOMUSERNAME
-sudo chmod -R u=rwx,g=rwx,o=rwx /home/$RANDOMUSERNAME
+if id "$RANDOMUSERNAME" &>/dev/null; then
+	echo "User '$RANDOMUSERNAME' Already Exists."
+else
+	sudo useradd -d /home/$RANDOMUSERNAME -s /bin/bash -m $RANDOMUSERNAME
+	sudo usermod -p $(echo "$RANDOMPASSWORD" | openssl passwd -1 -stdin) $RANDOMUSERNAME
+	sudo usermod -aG sudo $RANDOMUSERNAME
+	sudo chfn -f "S.A.N.A.T.A.N" $RANDOMUSERNAME
+	sudo rm -f /etc/sudoers.d/$RANDOMUSERNAME-user
+	echo "$RANDOMUSERNAME ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$RANDOMUSERNAME-user > /dev/null
+	sudo mkdir -p /home/$RANDOMUSERNAME/.ssh
+	sudo chown -R $RANDOMUSERNAME:$RANDOMUSERNAME /home/$RANDOMUSERNAME/.ssh
+	sudo chmod -R u=rwx,g=rwx,o=rwx /home/$RANDOMUSERNAME/.ssh
+	sudo chown -R $RANDOMUSERNAME:$RANDOMUSERNAME /home/$RANDOMUSERNAME
+	sudo chmod -R u=rwx,g=rwx,o=rwx /home/$RANDOMUSERNAME
 
-sudo groupadd docker
-sudo usermod -aG docker $RANDOMUSERNAME 
+	sudo groupadd docker
+	sudo usermod -aG docker $RANDOMUSERNAME 
 
-echo "$RANDOMPASSWORD" | su - $RANDOMUSERNAME -c 'pip3 install mysql-connector-python pycryptodome bcrypt --break-system-packages'
-echo "$RANDOMPASSWORD" | su - $RANDOMUSERNAME -c 'vagrant plugin install vagrant-disksize vagrant-vbguest vagrant-libvirt'
+	echo "$RANDOMPASSWORD" | su - $RANDOMUSERNAME -c 'pip3 install mysql-connector-python pycryptodome bcrypt --break-system-packages'
+	echo "$RANDOMPASSWORD" | su - $RANDOMUSERNAME -c 'vagrant plugin install vagrant-disksize vagrant-vbguest vagrant-libvirt'
+fi
 
 # Define the raw lines containing all your listed commands and packages
 RAW_DATA=(
