@@ -226,6 +226,7 @@ if [ "$PROCEEDTOINSTALL" == "Y" ] ; then
 	sudo rm -rf /opt/Matsya/Output/Logs/KURMA/*
 	sudo rm -rf /opt/Matsya/Output/Logs/MATSYA/*
 	sudo rm -rf /opt/Matsya/Output/Logs/VAMANA/*
+	sudo rm -rf /opt/Matsya/BackEnd/certs/*
 
 	sudo rm -f /usr/bin/newport	
 	sudo rm -f /usr/bin/sanatanprarambh
