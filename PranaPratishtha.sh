@@ -90,7 +90,7 @@ else
 	sudo groupadd docker
 	sudo usermod -aG docker $RANDOMUSERNAME 
 
-	echo "$RANDOMPASSWORD" | su - $RANDOMUSERNAME -c 'pip3 install mysql-connector-python pycryptodome bcrypt --break-system-packages'
+	echo "$RANDOMPASSWORD" | su - $RANDOMUSERNAME -c 'pip3 install mysql-connector-python pycryptodome bcrypt jupyter_server --break-system-packages'
 	echo "$RANDOMPASSWORD" | su - $RANDOMUSERNAME -c 'vagrant plugin install vagrant-disksize vagrant-vbguest vagrant-libvirt'
 fi
 
